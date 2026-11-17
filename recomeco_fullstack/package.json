@@ -1,0 +1,14 @@
+{
+  "name": "recomeco-fullstack",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/write-config.mjs",
+    "dev": "netlify dev",
+    "start": "netlify dev"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.38.1"
+  }
+}

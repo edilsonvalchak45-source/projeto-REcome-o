@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f8f3">
+  <meta name="description" content="Recomeço: acolhimento, informação e caminhos para encontrar apoio.">
+  <title>Recomeço — Um passo de cada vez</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { forest: "#285b45", leaf: "#477d5e", sage: "#e7f0e8", cream: "#f7faf6", ink: "#263b32" },
+        fontFamily: { sans: ["DM Sans", "sans-serif"], display: ["Manrope", "sans-serif"] },
+        boxShadow: { soft: "0 18px 50px rgba(39,75,57,.09)" }
+      }}
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="bg-white text-ink font-sans">
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <div class="topbar">
+    <div class="container flex items-center justify-between gap-3">
+      <span>Um espaço de acolhimento, informação e esperança.</span>
+      <a href="#ajuda-imediata" class="font-bold">Precisa de ajuda imediata?</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#inicio" aria-label="Recomeço, início">
+        <span class="brand-symbol" aria-hidden="true">♡</span>
+        <span><strong>recomeço</strong><small>apoio e orientação</small></span>
+      </a>
+      <button class="mobile-menu-button" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+      <nav id="mainNav" class="main-nav" aria-label="Navegação principal">
+        <a href="#como-ajudar">Como podemos ajudar</a>
+        <a href="#encontre-ajuda">Encontre apoio</a>
+        <a href="#jornada">Minha jornada</a>
+        <a href="#conteudos">Conteúdos</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn btn-outline btn-small" id="authOpen" type="button">Entrar</button>
+        <a class="btn btn-primary btn-small" href="#assistente">Falar com assistente <span>↗</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero container" id="inicio">
+      <div class="hero-copy">
+        <span class="eyebrow"><i></i> Você não precisa passar por isso sozinho</span>
+        <h1>Todo recomeço<br><em>começa com acolhimento.</em></h1>
+        <p class="hero-lead">Informação confiável, orientação para famílias e caminhos para encontrar apoio. Sem julgamentos, um passo de cada vez.</p>
+        <div class="flex flex-wrap gap-3 mt-7">
+          <a class="btn btn-primary" href="#como-ajudar">Encontrar meu caminho <span>→</span></a>
+          <a class="btn btn-soft" href="#encontre-ajuda">Buscar serviços de apoio</a>
+        </div>
+        <div class="trust-row"><span>✓ Informação educativa</span><span>✓ Acesso simples</span><span>✓ Respeito à privacidade</span></div>
+      </div>
+      <div class="hero-art" aria-label="Ilustração abstrata de um caminho em direção à luz">
+        <div class="hero-sun"></div><div class="hero-hill hill-one"></div><div class="hero-hill hill-two"></div><div class="hero-path"></div>
+        <div class="floating-note note-a"><b>♡</b><span><strong>Você importa</strong><small>Seu caminho merece cuidado</small></span></div>
+        <div class="floating-note note-b"><b>✳</b><span><strong>Um passo por vez</strong><small>Pequenas escolhas contam</small></span></div>
+      </div>
+    </section>
+
+    <section class="container principles">
+      <div><strong>Escuta</strong><span>com respeito e sem julgamentos</span></div>
+      <div><strong>Orientação</strong><span>para pessoas e famílias</span></div>
+      <div><strong>Conexão</strong><span>com redes de apoio</span></div>
+    </section>
+
+    <section class="section container" id="como-ajudar">
+      <div class="section-heading">
+        <span class="eyebrow">Comece por onde fizer sentido</span>
+        <h2>Como podemos ajudar você?</h2>
+        <p>Cada história é única. Escolha o assunto que mais se aproxima do que você está vivendo.</p>
+      </div>
+      <div class="three-cards">
+        <article class="path-card"><div class="card-icon mint">♡</div><span class="kicker">Para mim</span><h3>Estou buscando ajuda</h3><p>Entenda possibilidades de cuidado, conheça serviços e encontre informações para dar o próximo passo.</p><a href="#encontre-ajuda">Ver caminhos de apoio →</a></article>
+        <article class="path-card highlighted"><div class="card-icon peach">♧</div><span class="kicker">Para quem cuida</span><h3>Quero ajudar alguém</h3><p>Encontre orientações para conversar, estabelecer limites e cuidar também de você.</p><a href="#familias">Acessar guia para famílias →</a></article>
+        <article class="path-card"><div class="card-icon lavender">✳</div><span class="kicker">Rede de apoio</span><h3>Quero apoiar essa causa</h3><p>Conheça formas responsáveis de compartilhar informação e fortalecer redes comunitárias.</p><a href="#participar">Conhecer possibilidades →</a></article>
+      </div>
+    </section>
+
+    <section class="assistant-band" id="assistente">
+      <div class="container assistant-layout">
+        <div><span class="eyebrow eyebrow-light">Assistente Recomeço</span><h2>Uma conversa pode<br>ser o primeiro passo.</h2><p>Faça perguntas sobre os conteúdos do projeto, orientação familiar e formas de encontrar serviços. O assistente é informativo e não substitui profissionais.</p><button class="btn btn-white" id="openChat" type="button">Conversar agora <span>↗</span></button></div>
+        <div class="chat-teaser"><div class="chat-teaser-head"><span class="bot-avatar">♡</span><div><strong>Assistente Recomeço</strong><small>Orientação informativa</small></div><span class="ml-auto text-sage">✦</span></div><div class="chat-teaser-body"><div class="sample-bubble">Olá. Que bom ter você aqui. Como posso ajudar hoje?</div><div class="sample-bubble sample-user">Quero encontrar apoio para alguém da minha família.</div><div class="sample-bubble">Posso mostrar orientações para familiares e ajudar você a localizar serviços de apoio. 💚</div></div><button class="chat-teaser-open" id="openChatPreview" type="button">Abrir conversa →</button></div>
+      </div>
+    </section>
+
+    <section class="section container" id="encontre-ajuda">
+      <div class="section-heading section-heading-left">
+        <span class="eyebrow">Rede de acolhimento</span><h2>Encontre apoio perto de você.</h2>
+        <p>Pesquise serviços e grupos de ajuda. Confirme endereço, horários e disponibilidade diretamente com a instituição antes de se deslocar.</p>
+      </div>
+      <div class="search-panel">
+        <label>Tipo de serviço<select id="serviceType"><option value="todos">Todos os serviços</option><option value="CAPS AD">CAPS AD</option><option value="Saúde pública">Saúde pública</option><option value="Mútua ajuda">Grupos de mútua ajuda</option><option value="Familiares">Apoio a familiares</option></select></label>
+        <label>Cidade ou nome<input id="serviceSearch" type="search" placeholder="Ex.: Cascavel, CAPS AD"></label>
+        <button class="btn btn-primary" id="searchServices" type="button">Buscar serviços →</button>
+      </div>
+      <p class="notice" id="directoryNotice">Os resultados de demonstração são exemplos. Cadastre e valide instituições reais antes de disponibilizar o diretório ao público.</p>
+      <div id="serviceResults" class="service-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="journey-section" id="jornada">
+      <div class="container journey-layout">
+        <div><span class="eyebrow">Minha jornada</span><h2>Reconheça cada pequeno passo.</h2><p>Uma área para organizar objetivos pessoais e atividades de autocuidado. Não é tratamento, prontuário ou acompanhamento clínico.</p><ul class="check-list"><li>Escolha metas simples e possíveis.</li><li>Marque atividades que deseja experimentar.</li><li>Recomece quantas vezes precisar, sem culpa.</li></ul></div>
+        <div class="journey-card">
+          <div class="flex justify-between items-center"><div><span class="kicker">Seu espaço de hoje</span><h3>Um passo de cada vez</h3></div><span class="text-3xl text-leaf">✿</span></div>
+          <div class="flex justify-between text-xs text-slate-500 mt-5"><span>Atividades concluídas</span><strong id="progressLabel">0 de 4</strong></div>
+          <div class="progress-track"><span id="progressBar"></span></div>
+          <div class="goal-list" id="goalList">
+            <label><input type="checkbox" data-goal="respirar"> Fazer uma pausa e respirar por alguns minutos</label>
+            <label><input type="checkbox" data-goal="conversar"> Conversar com alguém de confiança</label>
+            <label><input type="checkbox" data-goal="informar"> Buscar informação sobre uma rede de apoio</label>
+            <label><input type="checkbox" data-goal="cuidar"> Reservar um momento para cuidar de mim</label>
+          </div>
+          <button class="text-button" id="resetGoals" type="button">Reiniciar atividades</button>
+          <p class="privacy-note">As marcações ficam apenas neste navegador. Evite registrar informações íntimas em dispositivos compartilhados.</p>
+          <div class="flex gap-2 flex-wrap mt-4"><button class="btn btn-soft btn-small" id="saveJournal" type="button">Salvar no meu espaço</button><span class="feedback" id="journalFeedback" role="status"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="familias">
+      <div class="section-heading"><span class="eyebrow">Apoio familiar</span><h2>Cuidar de alguém também exige cuidado com você.</h2><p>Alguns pontos de partida para apoiar sem assumir sozinho uma responsabilidade que precisa ser compartilhada.</p></div>
+      <div class="three-cards family-cards">
+        <article><span>01</span><h3>Converse com respeito</h3><p>Procure um momento seguro e tranquilo. Fale sobre suas preocupações sem humilhar, ameaçar ou rotular.</p></article>
+        <article><span>02</span><h3>Busque orientação</h3><p>Profissionais e grupos de apoio podem orientar a família sobre possibilidades de cuidado e proteção.</p></article>
+        <article><span>03</span><h3>Preserve seus limites</h3><p>Você também merece apoio. Reconheça o que está ao seu alcance e procure ajuda quando necessário.</p></article>
+      </div>
+    </section>
+
+    <section class="section container" id="conteudos">
+      <div class="section-heading section-heading-left"><span class="eyebrow">Conhecimento que acolhe</span><h2>Informação para seguir em frente.</h2><p>Explore materiais educativos e encontre assuntos que façam sentido para o seu momento.</p></div>
+      <div class="content-grid" id="contentCards">
+        <article class="content-card"><div class="content-art art-one">✿</div><div class="content-meta">GUIA • FAMÍLIA</div><h3>Como apoiar sem se esquecer de si</h3><p>Orientações iniciais para familiares e pessoas próximas.</p><button class="text-button recommend-button" data-topic="familia" type="button">Ver conteúdo recomendado →</button></article>
+        <article class="content-card"><div class="content-art art-two">☼</div><div class="content-meta">INFORMAÇÃO • CUIDADO</div><h3>Conhecendo a rede de atenção</h3><p>Entenda o papel dos serviços públicos e como procurar atendimento.</p><button class="text-button recommend-button" data-topic="servicos" type="button">Ver conteúdo recomendado →</button></article>
+        <article class="content-card"><div class="content-art art-three">❀</div><div class="content-meta">BEM-ESTAR • AUTOCUIDADO</div><h3>Pequenos passos de autocuidado</h3><p>Ideias simples para incluir pausas e apoio na rotina.</p><button class="text-button recommend-button" data-topic="autocuidado" type="button">Ver conteúdo recomendado →</button></article>
+      </div>
+      <div class="recommendation-panel" id="recommendationPanel" aria-live="polite"><span>✦</span><div><strong>Recomendações inteligentes</strong><p id="recommendationText">Escolha um tema para receber sugestões relacionadas. O recomendador utiliza similaridade entre o tema e os materiais educativos.</p></div></div>
+    </section>
+
+    <section class="impact-band" id="participar"><div class="container impact-layout"><div><span class="eyebrow eyebrow-light">Nosso propósito</span><h2>Uma rede mais informada<br>é uma rede mais forte.</h2><p>O Recomeço é um projeto acadêmico e comunitário em evolução. Queremos facilitar o acesso à informação e aproximar pessoas de redes de apoio confiáveis.</p></div><div class="impact-points"><div><b>01</b><span>Informação acessível</span></div><div><b>02</b><span>Privacidade e respeito</span></div><div><b>03</b><span>Conexão com serviços</span></div></div></div></section>
+
+    <section class="container emergency-section" id="ajuda-imediata">
+      <div class="emergency-mark">!</div><div><span class="eyebrow">Ajuda imediata</span><h2>Em uma emergência, procure ajuda agora.</h2><p>Se houver risco imediato à vida, intoxicação, overdose, dificuldade para respirar ou outra urgência médica, ligue para o SAMU (192) ou procure um serviço de emergência. Para apoio emocional, o CVV atende pelo 188.</p></div>
+      <div class="emergency-buttons"><a class="btn btn-danger" href="tel:192">Ligar 192 — SAMU</a><a class="btn btn-outline" href="tel:188">Ligar 188 — CVV</a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-main"><a class="brand" href="#inicio"><span class="brand-symbol">♡</span><span><strong>recomeço</strong><small>apoio e orientação</small></span></a><p>Um espaço digital de informação, acolhimento e conexão com redes de apoio.</p><div class="footer-links"><a href="#inicio">Início</a><a href="#encontre-ajuda">Encontrar apoio</a><a href="#assistente">Assistente</a><a href="#ajuda-imediata">Ajuda imediata</a></div></div><div class="container footer-bottom"><span>© 2026 Recomeço — Projeto acadêmico.</span><span>Este portal é informativo e não substitui avaliação ou atendimento profissional.</span></div></footer>
+
+  <button class="floating-chat" id="floatingChat" type="button" aria-label="Abrir assistente virtual">♡ <span>Converse com o Recomeço</span></button>
+
+  <dialog id="chatDialog" class="chat-dialog">
+    <div class="dialog-header"><span class="bot-avatar">♡</span><div><strong>Assistente Recomeço</strong><small>Orientação informativa</small></div><button id="closeChat" class="dialog-close" type="button" aria-label="Fechar">×</button></div>
+    <div id="chatMessages" class="dialog-messages" aria-live="polite"><div class="message bot-message">Olá. Estou aqui para ajudar você a encontrar informações e caminhos de apoio. O que gostaria de saber?</div></div>
+    <div id="chatTyping" class="typing-indicator" hidden>Assistente digitando...</div>
+    <form id="chatForm" class="dialog-form"><label class="sr-only" for="chatInput">Sua mensagem</label><input id="chatInput" maxlength="2000" autocomplete="off" placeholder="Digite sua mensagem..." required><button type="submit" aria-label="Enviar mensagem">↑</button></form>
+    <p class="chat-disclaimer">Não faço diagnósticos e não substituo profissionais. Em risco médico imediato, ligue 192. Evite enviar dados pessoais ou informações íntimas.</p>
+  </dialog>
+
+  <dialog id="authDialog" class="auth-dialog">
+    <div class="dialog-header"><div><strong>Acesse seu espaço</strong><small>Entre ou crie uma conta Recomeço</small></div><button id="authClose" class="dialog-close" type="button" aria-label="Fechar">×</button></div>
+    <form id="authForm" class="auth-form">
+      <label for="authEmail">E-mail</label><input id="authEmail" type="email" autocomplete="email" required>
+      <label for="authPassword">Senha</label><input id="authPassword" type="password" minlength="8" autocomplete="current-password" required>
+      <div class="flex gap-2 flex-wrap"><button class="btn btn-primary" type="submit" id="signInButton">Entrar</button><button class="btn btn-soft" type="button" id="signUpButton">Criar conta</button><button class="btn btn-outline" type="button" id="signOutButton" hidden>Sair</button></div>
+      <p id="authFeedback" class="feedback" role="status"></p>
+    </form>
+    <p class="chat-disclaimer">Use uma senha exclusiva. A autenticação requer configuração do Supabase. Não use este protótipo para armazenar dados clínicos.</p>
+  </dialog>
+
+  <div id="globalFeedback" class="global-feedback" role="status" aria-live="polite"></div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
