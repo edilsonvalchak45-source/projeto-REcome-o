@@ -24,12 +24,21 @@
 <body class="bg-white text-ink font-sans">
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-  <div class="topbar">
-    <div class="container flex items-center justify-between gap-3">
-      <span>Um espaço de acolhimento, informação e esperança.</span>
-      <a href="#ajuda-imediata" class="font-bold">Precisa de ajuda imediata?</a>
+
+  <div class="barra-topo">
+      <div class="container barra-topo-conteudo">
+        <button id="btn-emergencia" class="btn-vermelho" type="button">
+          Ajuda urgente 24H
+        </button>
+
+        <div class="botoes-acessibilidade">
+          <button id="btn-diminuir" type="button">A-</button>
+          <button id="btn-normal" type="button">A</button>
+          <button id="btn-aumentar" type="button">A+</button>
+          <button id="btn-contraste" type="button">Alto contraste</button>
+        </div>
+      </div>
     </div>
-  </div>
 
   <header class="site-header">
     <div class="container header-inner">
@@ -178,6 +187,32 @@
       <p id="authFeedback" class="feedback" role="status"></p>
     </form>
     <p class="chat-disclaimer">Use uma senha exclusiva. A autenticação requer configuração do Supabase. Não use este protótipo para armazenar dados clínicos.</p>
+  </dialog>
+
+  <dialog id="modal-emergencia" class="modal-ajuda">
+    <h2>Ajuda emediata</h2>
+    <p class="modal-texto">
+      Se voce ou alguem esta em perigo ligue agora, as ligações são gratuitas.
+    </p>
+
+    <div class="lista-telefones">
+      <a href="tel:188" class="card-telefone">
+        <strong class="numero-vermelho">188</strong>
+        <span>CVV - Apoio emocional e prevenção do suicidio</span>
+      </a>
+
+      <a href="tel:192" class="card-telefone">
+        <strong class="numero-vermelho">192</strong>
+        <span>SAMU - Overdose, abstinencia grave ou surto</span>
+      </a>
+
+      <a href="tel:136" class="card-telefone">
+        <strong class="numero-vermelho">136</strong>
+        <span>Disque Saude - Informação sobre o CAPS</span>
+      </a>
+    </div>
+
+    <button id="btn-fechar-modal" class="btn-fechar" type="button">Fechar</button>
   </dialog>
 
   <div id="globalFeedback" class="global-feedback" role="status" aria-live="polite"></div>

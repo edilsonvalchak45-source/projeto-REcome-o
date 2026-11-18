@@ -12,3 +12,160 @@
 @media(max-width:900px){.main-nav{gap:12px}.main-nav a{font-size:10px}.hero{gap:18px}.assistant-layout,.journey-layout{gap:35px}.emergency-section{grid-template-columns:auto 1fr}.emergency-buttons{grid-column:2;display:flex;flex-wrap:wrap}.footer-main{grid-template-columns:1fr 1fr}.footer-links{grid-column:1/-1}}
 @media(max-width:680px){.topbar{font-size:9px}.site-header{height:69px}.mobile-menu-button{display:block}.main-nav{display:none;position:absolute;top:68px;left:0;right:0;background:white;padding:18px 22px;box-shadow:0 12px 20px #203c2b14;flex-direction:column;align-items:flex-start}.main-nav.open{display:flex}.main-nav a{font-size:13px}.header-actions .btn-outline{display:none}.header-actions .btn{font-size:9px;padding:9px 11px}.hero{grid-template-columns:1fr;padding-top:48px}.hero h1{font-size:42px}.hero-art{height:300px}.principles{padding:15px 5px}.principles strong{font-size:12px}.principles span{font-size:8px}.section{padding-block:67px}.three-cards,.content-grid,.service-grid{grid-template-columns:1fr}.assistant-layout,.journey-layout,.impact-layout{grid-template-columns:1fr}.assistant-layout h2,.impact-layout h2{font-size:37px}.chat-teaser{justify-self:stretch}.search-panel{grid-template-columns:1fr}.search-panel .btn{width:100%}.journey-card{padding:19px}.emergency-section{grid-template-columns:auto 1fr;padding:17px}.emergency-section p{font-size:9px}.emergency-buttons{grid-column:1/-1}.footer-main{grid-template-columns:1fr}.footer-links{grid-column:auto}.footer-bottom{flex-direction:column}.floating-chat{right:12px;bottom:12px}.chat-dialog,.auth-dialog{margin:0 7px 70px auto}.trust-row{gap:8px}.trust-row span{font-size:9px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+
+
+/* ===== BARRA DO TOPO ===== */
+.barra-topo {
+  background-color: #f4f8f3;
+  border-bottom: 1px solid #dce5de;
+  padding: 8px 0;
+}
+
+.barra-topo-conteudo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-vermelho {
+  background-color: #d62828;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.btn-vermelho:hover {
+  background-color: #b71c1c;
+}
+
+.botoes-acessibilidade {
+  display: flex;
+  gap: 6px;
+}
+
+.botoes-acessibilidade button {
+  background-color: #ffffff;
+  color: #263b32;
+  border: 1px solid #b8c7be;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.botoes-acessibilidade button:hover {
+  background-color: #285b45;
+  color: #ffffff;
+}
+
+/* ===== MODAL DE EMERGÊNCIA ===== */
+.modal-ajuda {
+  border: none;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 450px;
+  width: 90%;
+  background-color: #ffffff;
+  color: #1e293b;
+}
+
+.modal-ajuda::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-ajuda h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.modal-texto {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 18px;
+}
+
+.lista-telefones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.card-telefone {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #fde8e8;
+  border: 1px solid #f8b4b4;
+  border-radius: 10px;
+  padding: 14px;
+  text-decoration: none;
+  color: #334155;
+  font-size: 14px;
+}
+
+.card-telefone:hover {
+  background-color: #fbd5d5;
+}
+
+.numero-vermelho {
+  font-size: 20px;
+  font-weight: bold;
+  color: #d62828;
+  min-width: 42px;
+}
+
+.btn-fechar {
+  background-color: #ffffff;
+  color: #1d6fa5;
+  border: 1px solid #1d6fa5;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-fechar:hover {
+  background-color: #1d6fa5;
+  color: #ffffff;
+}
+
+/* ===== ALTO CONTRASTE ===== */
+body.alto-contraste,
+body.alto-contraste header,
+body.alto-contraste section,
+body.alto-contraste footer,
+body.alto-contraste article,
+body.alto-contraste dialog,
+body.alto-contraste .barra-topo {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.alto-contraste h1,
+body.alto-contraste h2,
+body.alto-contraste h3,
+body.alto-contraste a,
+body.alto-contraste button {
+  color: #ffff00 !important;
+  background-color: #000000 !important;
+  border-color: #ffff00 !important;
+}
+
+body.alto-contraste .card-telefone {
+  background-color: #111111 !important;
+  border: 1px solid #ffff00 !important;
+  color: #ffffff !important;
+}
+
+body.alto-contraste .numero-vermelho {
+  color: #ffff00 !important;
+}

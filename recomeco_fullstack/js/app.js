@@ -158,3 +158,137 @@ document.addEventListener("DOMContentLoaded", () => {
   initAuth();
   initFooterYear();
 });
+
+/**
+ * Módulo de Acessibilidade e Emergência 24h — Projeto Recomeço
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  initModalEmergencia();
+  initAcessibilidade();
+});
+
+/* 
+   1. MODAL DE AJUDA URGENTE 24H
+ */
+function initModalEmergencia() {
+  const modal = document.getElementById("modal-emergencia");
+  const btnAbrir = document.getElementById("btn-emergencia");
+  const btnFechar = document.getElementById("btn-fechar-modal");
+
+  if (!modal || !btnAbrir || !btnFechar) return;
+
+  const abrirModal = () => {
+    if (!modal.open) {
+      modal.showModal();
+    }
+  };
+
+  const fecharModal = () => {
+    if (modal.open) {
+      modal.close();
+      btnAbrir.focus(); // Devolve o foco ao botão de origem (boa prática WCAG)
+    }
+  };
+
+  btnAbrir.addEventListener("click", abrirModal);
+  btnFechar.addEventListener("click", fecharModal);
+
+  // Fecha o modal ao clicar fora da caixa (no fundo escuro)
+  modal.addEventListener("click", (event) => {
+    const limite = modal.getBoundingClientRect();
+    const clicouFora =
+      event.clientX < limite.left ||
+      event.clientX > limite.right ||
+      event.clientY < limite.top ||
+      event.clientY > limite.bottom;
+
+    if (clicouFora) {
+      fecharModal();
+    }
+  });
+}
+
+/* 
+   2. CONTROLES DE ACESSIBILIDADE (FONTE + ZOOM + CONTRASTE)
+ */
+function initAcessibilidade() {
+  const CONFIG = {
+    escalaMinima: 85,
+    escalaMaxima: 130,
+    escalaPadrao: 100,
+    passo: 10,
+    chaveEscala: "recomeco_escala_tela",
+    chaveContraste: "recomeco_alto_contraste",
+  };
+
+  const elementos = {
+    btnDiminuir: document.getElementById("btn-diminuir"),
+    btnNormal: document.getElementById("btn-normal"),
+    btnAumentar: document.getElementById("btn-aumentar"),
+    btnContraste: document.getElementById("btn-contraste"),
+  };
+
+  // Recupera preferências salvas anteriormente ou usa o padrão
+  let escalaAtual = Number(localStorage.getItem(CONFIG.chaveEscala)) || CONFIG.escalaPadrao;
+  let contrasteAtivo = localStorage.getItem(CONFIG.chaveContraste) === "true";
+
+  /**
+   * Aplica simultaneamente a escala de fonte e o zoom visual da página
+   */
+  const aplicarEscala = (novaEscala) => {
+    // Garante que o valor nunca ultrapasse os limites mínimo e máximo
+    escalaAtual = Math.min(CONFIG.escalaMaxima, Math.max(CONFIG.escalaMinima, novaEscala));
+
+    // Calcula um zoom suave em sincronia com a fonte para não quebrar o layout
+    const fatorZoom = 1 + (escalaAtual - 100) / 200; // Ex.: 120% fonte = 1.10 (110%) de zoom
+
+    document.documentElement.style.fontSize = `${escalaAtual}%`;
+    document.body.style.zoom = fatorZoom.toFixed(2);
+
+    // Desabilita visualmente os botões quando atingem o limite
+    if (elementos.btnDiminuir) {
+      elementos.btnDiminuir.disabled = escalaAtual <= CONFIG.escalaMinima;
+    }
+    if (elementos.btnAumentar) {
+      elementos.btnAumentar.disabled = escalaAtual >= CONFIG.escalaMaxima;
+    }
+
+    localStorage.setItem(CONFIG.chaveEscala, String(escalaAtual));
+  };
+
+  /**
+   * Ativa ou desativa o tema de alto contraste e atualiza atributos ARIA
+   */
+  const aplicarContraste = (ativar) => {
+    contrasteAtivo = Boolean(ativar);
+    document.body.classList.toggle("alto-contraste", contrasteAtivo);
+
+    if (elementos.btnContraste) {
+      elementos.btnContraste.setAttribute("aria-pressed", String(contrasteAtivo));
+    }
+
+    localStorage.setItem(CONFIG.chaveContraste, String(contrasteAtivo));
+  };
+
+  // Eventos dos botões
+  elementos.btnAumentar?.addEventListener("click", () => {
+    aplicarEscala(escalaAtual + CONFIG.passo);
+  });
+
+  elementos.btnDiminuir?.addEventListener("click", () => {
+    aplicarEscala(escalaAtual - CONFIG.passo);
+  });
+
+  elementos.btnNormal?.addEventListener("click", () => {
+    aplicarEscala(CONFIG.escalaPadrao);
+  });
+
+  elementos.btnContraste?.addEventListener("click", () => {
+    aplicarContraste(!contrasteAtivo);
+  });
+
+  // Inicializa a página aplicando o estado salvo
+  aplicarEscala(escalaAtual);
+  aplicarContraste(contrasteAtivo);
+}
+
