@@ -1,7 +1,5 @@
-// Configuração pública gerada por scripts/write-config.mjs no build.
-// Em desenvolvimento local, mantenha valores vazios ou preencha apenas chaves públicas.
-window.RECOMECO_CONFIG = window.RECOMECO_CONFIG || {
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: "",
-  RECOMMENDER_API_URL: ""
+window.RECOMECO_CONFIG = {
+  "SUPABASE_URL": "https://ccwficykozlvazbatqqs.supabase.co",
+  "SUPABASE_ANON_KEY": "sb_publishable_WGBA2RLh8fZ4rIbfOP3HAg_AFmnmpNP",
+  "RECOMMENDER_API_URL": "https://SUA-API-PYTHON.example.com"
 };

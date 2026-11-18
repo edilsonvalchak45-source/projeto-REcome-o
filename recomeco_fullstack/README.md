@@ -73,12 +73,12 @@ Instale dependências na raiz:
 npm install
 ```
 
-Crie `.env` a partir de `.env.example` e preencha as variáveis públicas do Supabase e URL do recomendador. Para o chatbot, `AI_API_KEY` será lida pela Netlify CLI.
+Copie `.env.example` para `.env` na raiz do repositório e preencha as variáveis públicas do Supabase e URL do recomendador. O comando `npm run dev`, executado nesta pasta, gera a configuração do frontend antes de iniciar o Netlify Dev. Somente URL e chave pública do Supabase são incluídas no frontend; nunca use `service_role` nesse arquivo.
 
 Rode:
 
 ```bash
-npx netlify dev
+npm run dev
 ```
 
 Acesse a URL local exibida pelo Netlify CLI (normalmente `http://localhost:8888`). Assim as Netlify Functions também ficam disponíveis.
