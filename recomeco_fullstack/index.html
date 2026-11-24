@@ -50,11 +50,12 @@
       <nav id="mainNav" class="main-nav" aria-label="Navegação principal">
         <a href="#como-ajudar">Como podemos ajudar</a>
         <a href="#encontre-ajuda">Encontre apoio</a>
+        <a href="#clinicas">Clínicas</a>
         <a href="#jornada">Minha jornada</a>
         <a href="#conteudos">Conteúdos</a>
       </nav>
       <div class="header-actions">
-        <button class="btn btn-outline btn-small" id="authOpen" type="button">Entrar</button>
+        <a class="btn btn-soft btn-small" href="./admin.html">Área admin</a>
         <a class="btn btn-primary btn-small" href="#assistente">Falar com assistente <span>↗</span></a>
       </div>
     </div>
@@ -91,10 +92,9 @@
         <h2>Como podemos ajudar você?</h2>
         <p>Cada história é única. Escolha o assunto que mais se aproxima do que você está vivendo.</p>
       </div>
-      <div class="three-cards">
+      <div class="help-cards">
         <article class="path-card"><div class="card-icon mint">♡</div><span class="kicker">Para mim</span><h3>Estou buscando ajuda</h3><p>Entenda possibilidades de cuidado, conheça serviços e encontre informações para dar o próximo passo.</p><a href="#encontre-ajuda">Ver caminhos de apoio →</a></article>
         <article class="path-card highlighted"><div class="card-icon peach">♧</div><span class="kicker">Para quem cuida</span><h3>Quero ajudar alguém</h3><p>Encontre orientações para conversar, estabelecer limites e cuidar também de você.</p><a href="#familias">Acessar guia para famílias →</a></article>
-        <article class="path-card"><div class="card-icon lavender">✳</div><span class="kicker">Rede de apoio</span><h3>Quero apoiar essa causa</h3><p>Conheça formas responsáveis de compartilhar informação e fortalecer redes comunitárias.</p><a href="#participar">Conhecer possibilidades →</a></article>
       </div>
     </section>
 
@@ -119,22 +119,36 @@
       <div id="serviceResults" class="service-grid" aria-live="polite"></div>
     </section>
 
+    <section class="section container" id="clinicas">
+      <div class="section-heading section-heading-left">
+        <span class="eyebrow">Clínicas cadastradas</span>
+        <h2>Pesquise clínicas de atendimento.</h2>
+        <p>Consulte as clínicas publicadas no diretório pelo nome ou cidade. Confirme diretamente com a instituição os serviços, endereço e disponibilidade.</p>
+      </div>
+      <div class="search-panel clinic-search-panel">
+        <label for="clinicSearch">Nome da clínica ou cidade
+          <input id="clinicSearch" type="search" placeholder="Ex.: Clínica Esperança, Cascavel">
+        </label>
+        <button class="btn btn-primary" id="searchClinics" type="button">Pesquisar clínicas →</button>
+      </div>
+      <p class="notice">As clínicas exibidas foram cadastradas e publicadas no diretório. A publicação não substitui a confirmação das informações diretamente com a instituição.</p>
+      <div id="clinicResults" class="service-grid" aria-live="polite"></div>
+    </section>
+
     <section class="journey-section" id="jornada">
       <div class="container journey-layout">
         <div><span class="eyebrow">Minha jornada</span><h2>Reconheça cada pequeno passo.</h2><p>Uma área para organizar objetivos pessoais e atividades de autocuidado. Não é tratamento, prontuário ou acompanhamento clínico.</p><ul class="check-list"><li>Escolha metas simples e possíveis.</li><li>Marque atividades que deseja experimentar.</li><li>Recomece quantas vezes precisar, sem culpa.</li></ul></div>
         <div class="journey-card">
           <div class="flex justify-between items-center"><div><span class="kicker">Seu espaço de hoje</span><h3>Um passo de cada vez</h3></div><span class="text-3xl text-leaf">✿</span></div>
-          <div class="flex justify-between text-xs text-slate-500 mt-5"><span>Atividades concluídas</span><strong id="progressLabel">0 de 4</strong></div>
+          <div class="flex justify-between text-xs text-slate-500 mt-5"><span>Atividades concluídas</span><strong id="progressLabel">0 de 3</strong></div>
           <div class="progress-track"><span id="progressBar"></span></div>
           <div class="goal-list" id="goalList">
             <label><input type="checkbox" data-goal="respirar"> Fazer uma pausa e respirar por alguns minutos</label>
             <label><input type="checkbox" data-goal="conversar"> Conversar com alguém de confiança</label>
-            <label><input type="checkbox" data-goal="informar"> Buscar informação sobre uma rede de apoio</label>
             <label><input type="checkbox" data-goal="cuidar"> Reservar um momento para cuidar de mim</label>
           </div>
           <button class="text-button" id="resetGoals" type="button">Reiniciar atividades</button>
           <p class="privacy-note">As marcações ficam apenas neste navegador. Evite registrar informações íntimas em dispositivos compartilhados.</p>
-          <div class="flex gap-2 flex-wrap mt-4"><button class="btn btn-soft btn-small" id="saveJournal" type="button">Salvar no meu espaço</button><span class="feedback" id="journalFeedback" role="status"></span></div>
         </div>
       </div>
     </section>
@@ -158,15 +172,13 @@
       <div class="recommendation-panel" id="recommendationPanel" aria-live="polite"><span>✦</span><div><strong>Recomendações inteligentes</strong><p id="recommendationText">Escolha um tema para receber sugestões relacionadas. O recomendador utiliza similaridade entre o tema e os materiais educativos.</p></div></div>
     </section>
 
-    <section class="impact-band" id="participar"><div class="container impact-layout"><div><span class="eyebrow eyebrow-light">Nosso propósito</span><h2>Uma rede mais informada<br>é uma rede mais forte.</h2><p>O Recomeço é um projeto acadêmico e comunitário em evolução. Queremos facilitar o acesso à informação e aproximar pessoas de redes de apoio confiáveis.</p></div><div class="impact-points"><div><b>01</b><span>Informação acessível</span></div><div><b>02</b><span>Privacidade e respeito</span></div><div><b>03</b><span>Conexão com serviços</span></div></div></div></section>
-
     <section class="container emergency-section" id="ajuda-imediata">
       <div class="emergency-mark">!</div><div><span class="eyebrow">Ajuda imediata</span><h2>Em uma emergência, procure ajuda agora.</h2><p>Se houver risco imediato à vida, intoxicação, overdose, dificuldade para respirar ou outra urgência médica, ligue para o SAMU (192) ou procure um serviço de emergência. Para apoio emocional, o CVV atende pelo 188.</p></div>
       <div class="emergency-buttons"><a class="btn btn-danger" href="tel:192">Ligar 192 — SAMU</a><a class="btn btn-outline" href="tel:188">Ligar 188 — CVV</a></div>
     </section>
   </main>
 
-  <footer class="site-footer"><div class="container footer-main"><a class="brand" href="#inicio"><span class="brand-symbol">♡</span><span><strong>recomeço</strong><small>apoio e orientação</small></span></a><p>Um espaço digital de informação, acolhimento e conexão com redes de apoio.</p><div class="footer-links"><a href="#inicio">Início</a><a href="#encontre-ajuda">Encontrar apoio</a><a href="#assistente">Assistente</a><a href="#ajuda-imediata">Ajuda imediata</a></div></div><div class="container footer-bottom"><span>© 2026 Recomeço — Projeto acadêmico.</span><span>Este portal é informativo e não substitui avaliação ou atendimento profissional.</span></div></footer>
+  <footer class="site-footer"><div class="container footer-main"><a class="brand" href="#inicio"><span class="brand-symbol">♡</span><span><strong>recomeço</strong><small>apoio e orientação</small></span></a><p>Um espaço digital de informação, acolhimento e conexão com redes de apoio.</p><div class="footer-links"><a href="#inicio">Início</a><a href="#encontre-ajuda">Encontrar apoio</a><a href="#clinicas">Clínicas cadastradas</a><a href="#assistente">Assistente</a><a href="#ajuda-imediata">Ajuda imediata</a><a href="./admin.html">Administração</a></div></div><div class="container footer-bottom"><span>© 2026 Recomeço — Projeto acadêmico.</span><span>Este portal é informativo e não substitui avaliação ou atendimento profissional.</span></div></footer>
 
   <button class="floating-chat" id="floatingChat" type="button" aria-label="Abrir assistente virtual">♡ <span>Converse com o Recomeço</span></button>
 
@@ -176,17 +188,6 @@
     <div id="chatTyping" class="typing-indicator" hidden>Assistente digitando...</div>
     <form id="chatForm" class="dialog-form"><label class="sr-only" for="chatInput">Sua mensagem</label><input id="chatInput" maxlength="2000" autocomplete="off" placeholder="Digite sua mensagem..." required><button type="submit" aria-label="Enviar mensagem">↑</button></form>
     <p class="chat-disclaimer">Não faço diagnósticos e não substituo profissionais. Em risco médico imediato, ligue 192. Evite enviar dados pessoais ou informações íntimas.</p>
-  </dialog>
-
-  <dialog id="authDialog" class="auth-dialog">
-    <div class="dialog-header"><div><strong>Acesse seu espaço</strong><small>Entre ou crie uma conta Recomeço</small></div><button id="authClose" class="dialog-close" type="button" aria-label="Fechar">×</button></div>
-    <form id="authForm" class="auth-form">
-      <label for="authEmail">E-mail</label><input id="authEmail" type="email" autocomplete="email" required>
-      <label for="authPassword">Senha</label><input id="authPassword" type="password" minlength="8" autocomplete="current-password" required>
-      <div class="flex gap-2 flex-wrap"><button class="btn btn-primary" type="submit" id="signInButton">Entrar</button><button class="btn btn-soft" type="button" id="signUpButton">Criar conta</button><button class="btn btn-outline" type="button" id="signOutButton" hidden>Sair</button></div>
-      <p id="authFeedback" class="feedback" role="status"></p>
-    </form>
-    <p class="chat-disclaimer">Use uma senha exclusiva. A autenticação requer configuração do Supabase. Não use este protótipo para armazenar dados clínicos.</p>
   </dialog>
 
   <dialog id="modal-emergencia" class="modal-ajuda">

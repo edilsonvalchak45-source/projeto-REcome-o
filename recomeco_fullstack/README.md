@@ -96,9 +96,24 @@ Acesse a URL local exibida pelo Netlify CLI (normalmente `http://localhost:8888`
 
 O script `scripts/write-config.mjs` gera `js/runtime-config.js` durante o build. Ele só inclui URL e chave pública do Supabase e URL pública do recomendador. A chave da IA nunca é incluída nesse arquivo.
 
-## 7. Inserir serviços reais
+## 7. Cadastrar clínicas e outros serviços
 
-A tabela `support_resources` não permite escrita pública. Cadastre os registros pelo painel Supabase ou por backend administrativo confiável. Marque `is_published = true` somente depois de validar nome, endereço, telefone, site, horário e data da verificação. O protótipo usa dados de demonstração quando o Supabase não está configurado.
+A página administrativa fica em `admin.html`. Para habilitá-la em um projeto Supabase já configurado:
+
+1. Execute `admin-setup.sql` no SQL Editor. Ele cria a tabela de administradores e políticas RLS; não concede acesso automaticamente a nenhuma conta.
+2. Na página `admin.html`, crie a conta com seu e-mail e senha. Confirme o e-mail, se o Supabase exigir.
+3. Como proprietário do projeto, autorize sua conta no SQL Editor, trocando o e-mail abaixo pelo usado no cadastro:
+
+   ```sql
+   insert into public.admin_users (user_id)
+   select id from auth.users
+   where lower(email) = lower('seu-email@exemplo.com')
+   on conflict (user_id) do nothing;
+   ```
+
+4. Entre novamente em `admin.html`. Cadastre as clínicas; marque “Publicar no diretório” somente após validar as informações e informar a data de verificação.
+
+A autorização é conferida também pelas políticas RLS do banco, não apenas pela interface. Contas comuns não podem se promover nem cadastrar clínicas. Para uma instalação nova, `schema.sql` já contém a tabela e as políticas administrativas. A seção pública “Clínicas cadastradas” mostra somente registros publicados.
 
 ## 8. Privacidade e segurança
 
@@ -106,7 +121,7 @@ A tabela `support_resources` não permite escrita pública. Cadastre os registro
 - Não use o chatbot ou o recomendador para diagnosticar, classificar risco clínico ou recomendar tratamento.
 - O chatbot não é monitorado por equipe de emergência e não oferece atendimento humano 24h.
 - Não envie diário, dados de saúde ou identificadores ao provedor de IA.
-- A jornada salva localmente somente marcações de atividades; o botão de persistência envia ao Supabase apenas uma contagem agregada.
+- A jornada salva localmente somente marcações de atividades no navegador.
 - Para urgência médica, oriente SAMU 192. CVV 188 é apoio emocional, não serviço de emergência médica.
 - Revise materiais de saúde com profissionais qualificados e fontes oficiais.
 - Antes de produção, configure rate limiting, monitoramento, política de privacidade, termos de uso, processo de exclusão de conta/dados e revisão de segurança.

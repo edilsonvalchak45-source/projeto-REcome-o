@@ -169,3 +169,16 @@ body.alto-contraste .card-telefone {
 body.alto-contraste .numero-vermelho {
   color: #ffff00 !important;
 }
+
+.clinic-search-panel {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+@media (max-width: 680px) {
+  .clinic-search-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.help-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:19px;max-width:760px;margin-inline:auto}
+@media(max-width:680px){.help-cards{grid-template-columns:1fr}}

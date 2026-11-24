@@ -1,7 +1,6 @@
 import { initChatbot } from "./chatbot.js";
 import { initRecommender } from "./recomendador.js";
-import { initAuth } from "./auth.js";
-import { listPublicResources, saveJournalEntry, isSupabaseReady } from "./supabase-client.js";
+import { listPublicResources, isSupabaseReady } from "./supabase-client.js";
 
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
@@ -36,14 +35,14 @@ const demoServices = [
   { name: "Apoio a familiares — exemplo", category: "Familiares", city: "Atendimento a confirmar", state: "", description: "Busque grupos e serviços de orientação para familiares na rede local." }
 ];
 
-function renderServices(items) {
-  const target = $("#serviceResults");
+function renderServices(items, targetId = "serviceResults", emptyMessage = "Nenhum serviço encontrado. Tente outro termo ou consulte a rede pública local.") {
+  const target = document.getElementById(targetId);
   if (!target) return;
   target.replaceChildren();
   if (!items.length) {
     const empty = document.createElement("div");
     empty.className = "empty-state";
-    empty.textContent = "Nenhum serviço encontrado. Tente outro termo ou consulte a rede pública local.";
+    empty.textContent = emptyMessage;
     target.appendChild(empty);
     return;
   }
@@ -54,19 +53,39 @@ function renderServices(items) {
     category.textContent = item.category || "Serviço";
     const title = document.createElement("h3");
     title.textContent = item.name;
-    const city = document.createElement("p");
-    city.textContent = [item.city, item.state].filter(Boolean).join(" — ");
     const description = document.createElement("p");
     description.textContent = item.description || "Consulte os canais oficiais para confirmar informações.";
-    card.append(category, title, city, description);
+    card.append(category, title);
+    const location = [item.address, [item.city, item.state].filter(Boolean).join(" — ")].filter(Boolean).join(" · ");
+    if (location) {
+      const locationText = document.createElement("p");
+      locationText.textContent = location;
+      card.appendChild(locationText);
+    }
+    card.appendChild(description);
+    if (item.phone) {
+      const phone = document.createElement("a");
+      const telephone = item.phone.replace(/[^\d+]/g, "");
+      phone.href = `tel:${telephone}`;
+      phone.textContent = `Telefone: ${item.phone}`;
+      phone.className = "text-button";
+      card.appendChild(phone);
+    }
     if (item.website) {
-      const link = document.createElement("a");
-      link.href = item.website;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.textContent = "Site oficial ↗";
-      link.className = "text-button";
-      card.appendChild(link);
+      try {
+        const website = new URL(item.website);
+        if (website.protocol === "https:" || website.protocol === "http:") {
+          const link = document.createElement("a");
+          link.href = website.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "Site oficial ↗";
+          link.className = "text-button";
+          card.appendChild(link);
+        }
+      } catch {
+        console.warn("[Diretório] Endereço de site inválido para o registro:", item.name);
+      }
     }
     target.appendChild(card);
   });
@@ -91,6 +110,22 @@ async function loadServices() {
   renderServices(filtered);
 }
 
+async function loadClinics() {
+  const search = $("#clinicSearch")?.value.trim() || "";
+  if (!isSupabaseReady()) {
+    renderServices([], "clinicResults", "O diretório de clínicas ainda não está conectado ao Supabase.");
+    return;
+  }
+
+  const result = await listPublicResources({ type: "Clínicas", search });
+  if (result.error || !Array.isArray(result.data)) {
+    console.error("[Diretório] Não foi possível carregar as clínicas.", result.error);
+    renderServices([], "clinicResults", "Não foi possível carregar as clínicas agora. Tente novamente mais tarde.");
+    return;
+  }
+  renderServices(result.data, "clinicResults", "Nenhuma clínica publicada foi encontrada. Tente outro nome ou cidade.");
+}
+
 function initDirectory() {
   const button = $("#searchServices");
   const input = $("#serviceSearch");
@@ -99,6 +134,12 @@ function initDirectory() {
   if (input) input.addEventListener("keydown", event => { if (event.key === "Enter") loadServices(); });
   if (type) type.addEventListener("change", loadServices);
   loadServices();
+
+  const clinicButton = $("#searchClinics");
+  const clinicInput = $("#clinicSearch");
+  if (clinicButton) clinicButton.addEventListener("click", loadClinics);
+  if (clinicInput) clinicInput.addEventListener("keydown", event => { if (event.key === "Enter") loadClinics(); });
+  loadClinics();
 }
 
 function initJourney() {
@@ -106,8 +147,6 @@ function initJourney() {
   const progressLabel = $("#progressLabel");
   const progressBar = $("#progressBar");
   const resetButton = $("#resetGoals");
-  const saveButton = $("#saveJournal");
-  const feedback = $("#journalFeedback");
   if (!checks.length) return;
 
   const storageKey = "recomeco-goals-v1";
@@ -127,19 +166,6 @@ function initJourney() {
   if (resetButton) resetButton.addEventListener("click", () => {
     checks.forEach(check => { check.checked = false; });
     update();
-    if (feedback) feedback.textContent = "Atividades reiniciadas.";
-  });
-  if (saveButton) saveButton.addEventListener("click", async () => {
-    const completed = checks.filter(check => check.checked).length;
-    if (!isSupabaseReady()) {
-      if (feedback) feedback.textContent = "Marcações salvas somente neste navegador. Configure o Supabase para persistir na conta.";
-      return;
-    }
-    const result = await saveJournalEntry({
-      title: "Resumo de atividades",
-      body: `Atividades concluídas: ${completed} de ${checks.length}. Este registro contém apenas a contagem, sem detalhes pessoais.`
-    });
-    if (feedback) feedback.textContent = result.error ? result.error.message : "Resumo salvo na sua conta.";
   });
   update();
 }
@@ -155,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initJourney();
   initChatbot();
   initRecommender();
-  initAuth();
   initFooterYear();
 });
 

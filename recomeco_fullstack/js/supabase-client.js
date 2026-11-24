@@ -66,7 +66,7 @@ export function onAuthStateChange(callback) {
 export async function listPublicResources({ type = null, search = "" } = {}) {
   try {
     const client = requireClient();
-    let query = client.from("support_resources").select("id,name,category,city,state,description,phone,website,updated_at").eq("is_published", true).order("name");
+    let query = client.from("support_resources").select("id,name,category,address,city,state,description,phone,website,updated_at").eq("is_published", true).order("name");
     if (type) query = query.eq("category", type);
     if (search) query = query.or(`name.ilike.%${search}%,city.ilike.%${search}%,description.ilike.%${search}%`);
     const { data, error } = await query.limit(60);
@@ -77,18 +77,45 @@ export async function listPublicResources({ type = null, search = "" } = {}) {
   }
 }
 
-export async function saveJournalEntry({ title, body, mood = null }) {
+export async function isCurrentUserAdmin() {
   try {
     const client = requireClient();
     const { data: { user }, error: userError } = await client.auth.getUser();
     if (userError) throw userError;
-    if (!user) throw new Error("Entre na sua conta para salvar no banco de dados.");
-    const { data, error } = await client.from("journal_entries").insert({
-      user_id: user.id,
-      title,
-      body,
-      mood
-    }).select("id,created_at").single();
+    if (!user) return { data: false, error: null };
+    const { data, error } = await client.from("admin_users")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (error) throw error;
+    return { data: Boolean(data), error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}
+
+export async function listAdminClinics() {
+  try {
+    const client = requireClient();
+    const { data, error } = await client.from("support_resources")
+      .select("id,name,address,city,state,description,phone,website,is_published,verified_at,created_at")
+      .eq("category", "Clínicas")
+      .order("created_at", { ascending: false })
+      .limit(100);
+    if (error) throw error;
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}
+
+export async function createClinic(clinic) {
+  try {
+    const client = requireClient();
+    const { data, error } = await client.from("support_resources")
+      .insert({ ...clinic, category: "Clínicas" })
+      .select("id,name,address,city,state,description,phone,website,is_published,verified_at,created_at")
+      .single();
     if (error) throw error;
     return { data, error: null };
   } catch (error) {

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f8f3">
+  <meta name="description" content="Painel administrativo Recomeço para cadastrar clínicas.">
+  <title>Admin — Recomeço</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/admin.css">
+</head>
+<body class="admin-page">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html" aria-label="Recomeço, página inicial">
+        <span class="brand-symbol" aria-hidden="true">♡</span>
+        <span><strong>recomeço</strong><small>painel administrativo</small></span>
+      </a>
+      <a class="btn btn-outline btn-small" href="./index.html">Voltar ao site</a>
+    </div>
+  </header>
+
+  <main class="container admin-main">
+    <section class="admin-intro">
+      <span class="eyebrow">Área restrita</span>
+      <h1>Painel de clínicas</h1>
+      <p>Cadastre instituições e controle quais informações aparecem no diretório público.</p>
+    </section>
+
+    <section class="admin-panel" id="authPanel">
+      <h2>Acesse sua conta</h2>
+      <p>Crie sua conta ou entre para continuar. A autorização de administrador é concedida separadamente pelo responsável do projeto no Supabase.</p>
+      <form id="adminAuthForm" class="admin-form">
+        <label for="adminEmail">E-mail
+          <input id="adminEmail" type="email" autocomplete="email" required>
+        </label>
+        <label for="adminPassword">Senha
+          <input id="adminPassword" type="password" minlength="8" autocomplete="current-password" required>
+        </label>
+        <div class="admin-actions">
+          <button class="btn btn-primary" type="submit" id="adminSignIn">Entrar</button>
+          <button class="btn btn-soft" type="button" id="adminSignUp">Criar conta</button>
+        </div>
+      </form>
+      <p id="authFeedback" class="admin-feedback" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="admin-panel admin-access-panel" id="accessPanel" hidden>
+      <div class="admin-panel-heading">
+        <div>
+          <h2>Conta autenticada</h2>
+          <p id="accessMessage" role="status" aria-live="polite"></p>
+        </div>
+        <button class="btn btn-outline btn-small" id="adminSignOut" type="button">Sair</button>
+      </div>
+      <div class="admin-instructions" id="promotionInstructions" hidden>
+        <strong>Ative o acesso administrativo</strong>
+        <p>Depois de criar e confirmar sua conta, o proprietário do projeto precisa promovê-la no SQL Editor do Supabase. Troque o e-mail de exemplo pelo e-mail exato usado no cadastro:</p>
+        <pre><code>insert into public.admin_users (user_id)
+select id from auth.users
+where lower(email) = lower('seu-email@exemplo.com')
+on conflict (user_id) do nothing;</code></pre>
+        <p>Execute esse comando apenas para uma conta de confiança. Depois, saia e entre novamente nesta página.</p>
+      </div>
+    </section>
+
+    <section class="admin-panel" id="clinicPanel" hidden>
+      <div class="admin-panel-heading">
+        <div>
+          <span class="eyebrow">Diretório público</span>
+          <h2>Cadastrar clínica</h2>
+        </div>
+      </div>
+      <form id="clinicForm" class="admin-form clinic-form">
+        <label for="clinicName">Nome da clínica *
+          <input id="clinicName" name="name" maxlength="160" required>
+        </label>
+        <label for="clinicPhone">Telefone
+          <input id="clinicPhone" name="phone" type="tel" maxlength="40" autocomplete="tel">
+        </label>
+        <label for="clinicAddress">Endereço *
+          <input id="clinicAddress" name="address" maxlength="240" required>
+        </label>
+        <label for="clinicCity">Cidade *
+          <input id="clinicCity" name="city" maxlength="100" required>
+        </label>
+        <label for="clinicState">Estado (UF)
+          <input id="clinicState" name="state" maxlength="2" pattern="[A-Za-z]{2}" title="Informe a sigla com duas letras, por exemplo PR.">
+        </label>
+        <label for="clinicWebsite">Site oficial
+          <input id="clinicWebsite" name="website" type="url" maxlength="500" placeholder="https://">
+        </label>
+        <label class="clinic-description" for="clinicDescription">Descrição e serviços oferecidos *
+          <textarea id="clinicDescription" name="description" maxlength="1000" rows="4" required></textarea>
+        </label>
+        <label for="clinicVerifiedAt">Data de verificação
+          <input id="clinicVerifiedAt" name="verified_at" type="date">
+        </label>
+        <label class="clinic-publish">
+          <input id="clinicPublished" name="is_published" type="checkbox">
+          Publicar no diretório do site
+        </label>
+        <p class="admin-hint">Publique somente após confirmar os dados diretamente com a clínica. Rascunhos ficam visíveis apenas para administradores.</p>
+        <div class="admin-actions clinic-submit">
+          <button class="btn btn-primary" id="saveClinic" type="submit">Cadastrar clínica</button>
+          <span id="clinicFeedback" class="admin-feedback" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="admin-panel" id="clinicListPanel" hidden>
+      <div class="admin-panel-heading">
+        <div>
+          <span class="eyebrow">Gerenciamento</span>
+          <h2>Clínicas cadastradas</h2>
+        </div>
+        <button class="btn btn-soft btn-small" id="refreshClinics" type="button">Atualizar lista</button>
+      </div>
+      <div id="adminClinicList" class="admin-clinic-list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/admin.js"></script>
+</body>
+</html>
