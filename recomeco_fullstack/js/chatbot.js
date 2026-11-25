@@ -49,18 +49,23 @@ export function initChatbot() {
     if (submitButton) submitButton.disabled = true;
 
     try {
-      const response = await fetch(CONFIG.chatEndpoint, {
+      const apiBaseUrl = (CONFIG && CONFIG.RECOMMENDER_API_URL) ? CONFIG.RECOMMENDER_API_URL.replace(/\/$/, "") : "http://127.0.0.1:8000";
+      const response = await fetch(`${apiBaseUrl}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, history: history.slice(-8, -1) })
+        body: JSON.stringify({ message: message })
       });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.error || `Falha ao conversar (${response.status}).`);
-      const reply = String(payload.reply || "Não consegui elaborar uma resposta agora.");
+
+      if (!response.ok) throw new Error(`Falha ao comunicar com o assistente (${response.status}).`);
+      const data = await response.json();
+
+      const reply = (data.reply || data.response || "").trim() || "Não consegui formular uma resposta agora. Tente novamente em instantes.";
+
       addMessage(reply, "assistant");
       history.push({ role: "assistant", content: reply });
     } catch (error) {
-      const reply = `${error.message} Se estiver usando Live Server, as Netlify Functions não estarão disponíveis. Execute o projeto com Netlify CLI ou publique no Netlify. Em uma emergência, ligue 192.`;
+      console.error(error);
+      const reply = `${error.message} Verifique se o servidor FastAPI (uvicorn) está rodando na porta 8000. Em uma emergência, ligue 192.`;
       addMessage(reply, "assistant");
       history.push({ role: "assistant", content: reply });
     } finally {
