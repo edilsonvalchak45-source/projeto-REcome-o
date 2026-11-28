@@ -182,3 +182,42 @@ body.alto-contraste .numero-vermelho {
 
 .help-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:19px;max-width:760px;margin-inline:auto}
 @media(max-width:680px){.help-cards{grid-template-columns:1fr}}
+
+.testimonials-section{background:#f7faf6}
+.testimonial-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:center;margin-bottom:42px}
+.testimonial-bubble{position:relative;min-height:190px;padding:24px 23px 20px;border:1px solid transparent;border-radius:22px;box-shadow:0 12px 30px rgba(39,75,57,.07);animation:testimonial-float 5s ease-in-out infinite}
+.testimonial-bubble:nth-child(5n+2){animation-delay:-.7s}
+.testimonial-bubble:nth-child(5n+3){animation-delay:-1.4s}
+.testimonial-bubble:nth-child(5n+4){animation-delay:-2.1s}
+.testimonial-bubble:nth-child(5n){animation-delay:-2.8s}
+.testimonial-bubble:after{content:"";position:absolute;bottom:-10px;left:34px;width:20px;height:20px;transform:rotate(45deg);background:inherit;border-right:inherit;border-bottom:inherit}
+.testimonial-color-0{background:#e8f3e9;border-color:#d6e8d9;color:#285b45}
+.testimonial-color-1{background:#fff0e3;border-color:#f5dfcb;color:#76543c}
+.testimonial-color-2{background:#eeeafa;border-color:#e0daf0;color:#5e547d}
+.testimonial-color-3{background:#e6f1f5;border-color:#d3e6ed;color:#3d626e}
+.testimonial-color-4{background:#f8e9ed;border-color:#f0d7df;color:#754d5b}
+.testimonial-quote{display:block;height:35px;font:800 48px/1 Manrope,sans-serif;opacity:.55}
+.testimonial-bubble blockquote{margin:7px 0 15px;font-size:13px;line-height:1.75;overflow-wrap:anywhere;white-space:pre-wrap}
+.testimonial-author{margin:0;font:800 11px Manrope,sans-serif}
+.testimonial-empty{grid-column:1/-1;margin:0;padding:24px;text-align:center;border:1px dashed #d6e3d8;border-radius:14px;color:var(--muted);font-size:12px}
+.testimonial-form-card{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;padding:30px;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+.testimonial-form-card h3{margin:10px 0;font:700 22px Manrope,sans-serif;letter-spacing:-.5px}
+.testimonial-form-card>div>p{font-size:12px;line-height:1.8;color:var(--muted)}
+.testimonial-form{display:grid;gap:14px}
+.testimonial-form>label{display:grid;gap:7px;color:#62756a;font-size:11px;font-weight:800}
+.testimonial-form input:not([type=checkbox]),.testimonial-form textarea{width:100%;border:1px solid #dfe8e0;border-radius:10px;padding:11px 12px;background:white;color:var(--ink);font:500 13px "DM Sans",sans-serif;outline-color:#8bb99a}
+.testimonial-form textarea{resize:vertical}
+.testimonial-form .testimonial-consent{display:flex;align-items:flex-start;gap:9px;font-weight:500;line-height:1.6}
+.testimonial-consent input{width:17px;height:17px;margin:2px 0 0;flex:0 0 auto;accent-color:var(--green)}
+.testimonial-submit{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.testimonial-submit button:disabled{opacity:.65;cursor:wait}
+.testimonial-feedback{font-size:11px;color:var(--green)}
+@keyframes testimonial-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.admin-testimonial-list{display:grid;gap:11px;margin-top:12px}
+.admin-testimonial-card{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px 14px;border:1px solid #e2ebe4;border-radius:12px;padding:15px}
+.admin-testimonial-card h3{grid-column:1/-1;font:700 15px Manrope,sans-serif;margin:0}
+.admin-testimonial-content{grid-column:1/-1;font-size:12px;line-height:1.7;color:#687b72;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.admin-testimonial-card .btn{grid-column:2;grid-row:1}
+@media(max-width:900px){.testimonial-list{grid-template-columns:repeat(2,minmax(0,1fr))}.testimonial-form-card{gap:25px}}
+@media(max-width:680px){.testimonial-list{grid-template-columns:1fr;gap:14px}.testimonial-bubble{min-height:0}.testimonial-form-card{grid-template-columns:1fr;padding:21px;gap:10px}.testimonial-submit{align-items:flex-start;flex-direction:column}.testimonial-submit .btn{width:100%}.admin-testimonial-card{grid-template-columns:1fr}.admin-testimonial-card .btn{grid-column:1;grid-row:auto;justify-self:start}}
+@media(prefers-reduced-motion:reduce){.testimonial-bubble{animation:none}}

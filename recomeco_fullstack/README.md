@@ -100,7 +100,7 @@ O script `scripts/write-config.mjs` gera `js/runtime-config.js` durante o build.
 
 A página administrativa fica em `admin.html`. Para habilitá-la em um projeto Supabase já configurado:
 
-1. Execute `admin-setup.sql` no SQL Editor. Ele cria a tabela de administradores e políticas RLS; não concede acesso automaticamente a nenhuma conta.
+1. Execute `admin-setup.sql` no SQL Editor. Ele cria a tabela de administradores, habilita o envio e a moderação de depoimentos e configura as políticas RLS; não concede acesso automaticamente a nenhuma conta.
 2. Na página `admin.html`, crie a conta com seu e-mail e senha. Confirme o e-mail, se o Supabase exigir.
 3. Como proprietário do projeto, autorize sua conta no SQL Editor, trocando o e-mail abaixo pelo usado no cadastro:
 
@@ -111,9 +111,9 @@ A página administrativa fica em `admin.html`. Para habilitá-la em um projeto S
    on conflict (user_id) do nothing;
    ```
 
-4. Entre novamente em `admin.html`. Cadastre as clínicas; marque “Publicar no diretório” somente após validar as informações e informar a data de verificação.
+4. Entre novamente em `admin.html`. Cadastre as clínicas; marque “Publicar no diretório” somente após validar as informações e informar a data de verificação. Nas listas de clínicas e de depoimentos, use “Excluir permanentemente” para apagar do banco os registros que não deseja manter. Na seção “Depoimentos recebidos”, também é possível aprovar ou retirar cada publicação.
 
-A autorização é conferida também pelas políticas RLS do banco, não apenas pela interface. Contas comuns não podem se promover nem cadastrar clínicas. Para uma instalação nova, `schema.sql` já contém a tabela e as políticas administrativas. A seção pública “Clínicas cadastradas” mostra somente registros publicados.
+A autorização é conferida também pelas políticas RLS do banco, não apenas pela interface. Contas comuns não podem se promover nem cadastrar clínicas ou publicar depoimentos. Depoimentos enviados pelo site ficam pendentes e somente os aprovados são exibidos publicamente. Para uma instalação nova, `schema.sql` já contém as tabelas e políticas administrativas e de moderação.
 
 ## 8. Privacidade e segurança
 

@@ -123,6 +123,95 @@ export async function createClinic(clinic) {
   }
 }
 
+export async function deleteClinic(id) {
+  try {
+    const client = requireClient();
+    const { error } = await client.from("support_resources")
+      .delete()
+      .eq("id", id)
+      .eq("category", "Clínicas")
+      .select("id")
+      .single();
+    if (error) throw error;
+    return { error: null };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function listPublicTestimonials() {
+  try {
+    const client = requireClient();
+    const { data, error } = await client.from("testimonials")
+      .select("id,name,content,created_at")
+      .eq("is_published", true)
+      .order("created_at", { ascending: false })
+      .limit(30);
+    if (error) throw error;
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}
+
+export async function submitTestimonial({ name, content }) {
+  try {
+    const client = requireClient();
+    const { error } = await client.from("testimonials").insert({
+      name,
+      content,
+      is_published: false,
+      consent: true
+    });
+    if (error) throw error;
+    return { error: null };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function listAdminTestimonials() {
+  try {
+    const client = requireClient();
+    const { data, error } = await client.from("testimonials")
+      .select("id,name,content,is_published,created_at")
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (error) throw error;
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}
+
+export async function setTestimonialPublished(id, isPublished) {
+  try {
+    const client = requireClient();
+    const { error } = await client.from("testimonials")
+      .update({ is_published: isPublished })
+      .eq("id", id);
+    if (error) throw error;
+    return { error: null };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function deleteTestimonial(id) {
+  try {
+    const client = requireClient();
+    const { error } = await client.from("testimonials")
+      .delete()
+      .eq("id", id)
+      .select("id")
+      .single();
+    if (error) throw error;
+    return { error: null };
+  } catch (error) {
+    return { error };
+  }
+}
+
 export function isSupabaseReady() {
   return Boolean(supabase);
 }

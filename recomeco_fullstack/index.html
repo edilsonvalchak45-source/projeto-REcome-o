@@ -51,6 +51,7 @@
         <a href="#como-ajudar">Como podemos ajudar</a>
         <a href="#encontre-ajuda">Encontre apoio</a>
         <a href="#clinicas">Clínicas</a>
+        <a href="#depoimentos">Depoimentos</a>
         <a href="#jornada">Minha jornada</a>
         <a href="#conteudos">Conteúdos</a>
       </nav>
@@ -135,6 +136,40 @@
       <div id="clinicResults" class="service-grid" aria-live="polite"></div>
     </section>
 
+    <section class="section testimonials-section" id="depoimentos">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Histórias de recomeço</span>
+          <h2>Palavras que acolhem e inspiram.</h2>
+          <p>Relatos compartilhados por quem passou por aqui. Cada depoimento é revisado antes de aparecer no site.</p>
+        </div>
+        <div id="testimonialList" class="testimonial-list" aria-live="polite"></div>
+        <div class="testimonial-form-card">
+          <div>
+            <span class="eyebrow">Sua voz também importa</span>
+            <h3>Quer compartilhar sua experiência?</h3>
+            <p>Seu relato será analisado pela equipe e só ficará visível no site se for aprovado. Use um nome ou apelido e não inclua informações pessoais ou detalhes íntimos.</p>
+          </div>
+          <form id="testimonialForm" class="testimonial-form">
+            <label for="testimonialName">Como deseja ser identificado?
+              <input id="testimonialName" name="name" maxlength="60" autocomplete="nickname" required>
+            </label>
+            <label for="testimonialContent">Seu depoimento
+              <textarea id="testimonialContent" name="content" minlength="20" maxlength="800" rows="5" required></textarea>
+            </label>
+            <label class="testimonial-consent">
+              <input id="testimonialConsent" name="consent" type="checkbox" required>
+              <span>Autorizo a publicação do meu depoimento no site caso ele seja aprovado.</span>
+            </label>
+            <div class="testimonial-submit">
+              <button class="btn btn-primary" type="submit">Enviar para avaliação →</button>
+              <span id="testimonialFeedback" class="testimonial-feedback" role="status" aria-live="polite"></span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <section class="journey-section" id="jornada">
       <div class="container journey-layout">
         <div><span class="eyebrow">Minha jornada</span><h2>Reconheça cada pequeno passo.</h2><p>Uma área para organizar objetivos pessoais e atividades de autocuidado. Não é tratamento, prontuário ou acompanhamento clínico.</p><ul class="check-list"><li>Escolha metas simples e possíveis.</li><li>Marque atividades que deseja experimentar.</li><li>Recomece quantas vezes precisar, sem culpa.</li></ul></div>
@@ -178,7 +213,7 @@
     </section>
   </main>
 
-  <footer class="site-footer"><div class="container footer-main"><a class="brand" href="#inicio"><span class="brand-symbol">♡</span><span><strong>recomeço</strong><small>apoio e orientação</small></span></a><p>Um espaço digital de informação, acolhimento e conexão com redes de apoio.</p><div class="footer-links"><a href="#inicio">Início</a><a href="#encontre-ajuda">Encontrar apoio</a><a href="#clinicas">Clínicas cadastradas</a><a href="#assistente">Assistente</a><a href="#ajuda-imediata">Ajuda imediata</a><a href="./admin.html">Administração</a></div></div><div class="container footer-bottom"><span>© 2026 Recomeço — Projeto acadêmico.</span><span>Este portal é informativo e não substitui avaliação ou atendimento profissional.</span></div></footer>
+  <footer class="site-footer"><div class="container footer-main"><a class="brand" href="#inicio"><span class="brand-symbol">♡</span><span><strong>recomeço</strong><small>apoio e orientação</small></span></a><p>Um espaço digital de informação, acolhimento e conexão com redes de apoio.</p><div class="footer-links"><a href="#inicio">Início</a><a href="#encontre-ajuda">Encontrar apoio</a><a href="#clinicas">Clínicas cadastradas</a><a href="#depoimentos">Depoimentos</a><a href="#assistente">Assistente</a><a href="#ajuda-imediata">Ajuda imediata</a><a href="./admin.html">Administração</a></div></div><div class="container footer-bottom"><span>© 2026 Recomeço — Projeto acadêmico.</span><span>Este portal é informativo e não substitui avaliação ou atendimento profissional.</span></div></footer>
 
   <button class="floating-chat" id="floatingChat" type="button" aria-label="Abrir assistente virtual">♡ <span>Converse com o Recomeço</span></button>
 

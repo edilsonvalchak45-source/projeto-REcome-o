@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f4f8f3">
-  <meta name="description" content="Painel administrativo Recomeço para cadastrar clínicas.">
+  <meta name="description" content="Painel administrativo Recomeço para clínicas e depoimentos.">
   <title>Admin — Recomeço</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,8 +26,8 @@
   <main class="container admin-main">
     <section class="admin-intro">
       <span class="eyebrow">Área restrita</span>
-      <h1>Painel de clínicas</h1>
-      <p>Cadastre instituições e controle quais informações aparecem no diretório público.</p>
+      <h1>Painel de administração</h1>
+      <p>Cadastre clínicas e avalie quais depoimentos podem aparecer no site.</p>
     </section>
 
     <section class="admin-panel" id="authPanel">
@@ -120,6 +120,19 @@ on conflict (user_id) do nothing;</code></pre>
         <button class="btn btn-soft btn-small" id="refreshClinics" type="button">Atualizar lista</button>
       </div>
       <div id="adminClinicList" class="admin-clinic-list" aria-live="polite"></div>
+    </section>
+
+    <section class="admin-panel" id="testimonialPanel" hidden>
+      <div class="admin-panel-heading">
+        <div>
+          <span class="eyebrow">Moderação</span>
+          <h2>Depoimentos recebidos</h2>
+          <p>Revise cada relato e aprove ou retire a publicação no site.</p>
+        </div>
+        <button class="btn btn-soft btn-small" id="refreshTestimonials" type="button">Atualizar lista</button>
+      </div>
+      <p id="testimonialAdminFeedback" class="admin-feedback" role="status" aria-live="polite"></p>
+      <div id="adminTestimonialList" class="admin-testimonial-list" aria-live="polite"></div>
     </section>
   </main>
 

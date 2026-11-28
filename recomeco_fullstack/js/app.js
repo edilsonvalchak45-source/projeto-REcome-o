@@ -1,6 +1,11 @@
 import { initChatbot } from "./chatbot.js";
 import { initRecommender } from "./recomendador.js";
-import { listPublicResources, isSupabaseReady } from "./supabase-client.js";
+import {
+  isSupabaseReady,
+  listPublicResources,
+  listPublicTestimonials,
+  submitTestimonial
+} from "./supabase-client.js";
 
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
@@ -142,6 +147,84 @@ function initDirectory() {
   loadClinics();
 }
 
+function renderTestimonials(items, message) {
+  const target = $("#testimonialList");
+  if (!target) return;
+  target.replaceChildren();
+  if (!items.length) {
+    const empty = document.createElement("p");
+    empty.className = "testimonial-empty";
+    empty.textContent = message;
+    target.appendChild(empty);
+    return;
+  }
+
+  items.forEach((item, index) => {
+    const card = document.createElement("article");
+    card.className = `testimonial-bubble testimonial-color-${index % 5}`;
+    const quote = document.createElement("span");
+    quote.className = "testimonial-quote";
+    quote.setAttribute("aria-hidden", "true");
+    quote.textContent = "“";
+    const content = document.createElement("blockquote");
+    content.textContent = item.content;
+    const author = document.createElement("p");
+    author.className = "testimonial-author";
+    author.textContent = item.name;
+    card.append(quote, content, author);
+    target.appendChild(card);
+  });
+}
+
+async function loadTestimonials() {
+  const target = $("#testimonialList");
+  if (!target) return;
+  if (!isSupabaseReady()) {
+    renderTestimonials([], "Os depoimentos aprovados aparecerão aqui.");
+    return;
+  }
+
+  const result = await listPublicTestimonials();
+  if (result.error || !Array.isArray(result.data)) {
+    console.error("[Depoimentos] Não foi possível carregar os depoimentos.", result.error);
+    renderTestimonials([], "Não foi possível carregar os depoimentos agora. Tente novamente mais tarde.");
+    return;
+  }
+  renderTestimonials(result.data, "Ainda não há depoimentos publicados. Seja a primeira pessoa a compartilhar sua história.");
+}
+
+function initTestimonials() {
+  const form = $("#testimonialForm");
+  if (form) form.addEventListener("submit", async event => {
+    event.preventDefault();
+    const feedback = $("#testimonialFeedback");
+    const submitButton = form.querySelector('button[type="submit"]');
+    const name = $("#testimonialName")?.value.trim() || "";
+    const content = $("#testimonialContent")?.value.trim() || "";
+    if (name.length < 1 || content.length < 20) {
+      if (feedback) feedback.textContent = "Informe um nome e um depoimento com pelo menos 20 caracteres.";
+      return;
+    }
+    if (!isSupabaseReady()) {
+      if (feedback) feedback.textContent = "O envio de depoimentos ainda não está disponível.";
+      return;
+    }
+
+    if (submitButton) submitButton.disabled = true;
+    if (feedback) feedback.textContent = "Enviando seu depoimento...";
+    const result = await submitTestimonial({ name, content });
+    if (submitButton) submitButton.disabled = false;
+    if (result.error) {
+      console.error("[Depoimentos] Não foi possível enviar o depoimento.", result.error);
+      if (feedback) feedback.textContent = "Não foi possível enviar agora. Tente novamente mais tarde.";
+      return;
+    }
+    form.reset();
+    if (feedback) feedback.textContent = "Obrigado por compartilhar. Seu depoimento foi enviado para avaliação.";
+  });
+  loadTestimonials();
+}
+
 function initJourney() {
   const checks = $$("#goalList input[type=checkbox]");
   const progressLabel = $("#progressLabel");
@@ -178,6 +261,7 @@ function initFooterYear() {
 document.addEventListener("DOMContentLoaded", () => {
   initNavigation();
   initDirectory();
+  initTestimonials();
   initJourney();
   initChatbot();
   initRecommender();

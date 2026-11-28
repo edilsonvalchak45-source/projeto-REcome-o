@@ -1,10 +1,14 @@
 import {
   createClinic,
+  deleteClinic,
+  deleteTestimonial,
   getSession,
   isCurrentUserAdmin,
   isSupabaseReady,
   listAdminClinics,
+  listAdminTestimonials,
   onAuthStateChange,
+  setTestimonialPublished,
   signIn,
   signOut,
   signUp
@@ -15,6 +19,7 @@ const authPanel = $("#authPanel");
 const accessPanel = $("#accessPanel");
 const clinicPanel = $("#clinicPanel");
 const clinicListPanel = $("#clinicListPanel");
+const testimonialPanel = $("#testimonialPanel");
 const promotionInstructions = $("#promotionInstructions");
 let refreshId = 0;
 
@@ -54,6 +59,13 @@ function showClinicList(items) {
       phone.textContent = `Telefone: ${item.phone}`;
       card.appendChild(phone);
     }
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "btn btn-danger btn-small admin-delete-button";
+    deleteButton.type = "button";
+    deleteButton.dataset.clinicId = item.id;
+    deleteButton.dataset.clinicName = item.name;
+    deleteButton.textContent = "Excluir permanentemente";
+    card.appendChild(deleteButton);
     target.appendChild(card);
   });
 }
@@ -65,10 +77,69 @@ async function loadClinics() {
   if (result.error || !Array.isArray(result.data)) {
     console.error("[Admin] Não foi possível carregar as clínicas.", result.error);
     setFeedback(feedback, "Não foi possível carregar a lista. Confira sua conexão e tente novamente.", true);
-    return;
+    return false;
   }
   showClinicList(result.data);
   setFeedback(feedback, "");
+  return true;
+}
+
+function showTestimonials(items) {
+  const target = $("#adminTestimonialList");
+  if (!target) return;
+  target.replaceChildren();
+  if (!items.length) {
+    const empty = document.createElement("p");
+    empty.className = "admin-empty";
+    empty.textContent = "Ainda não há depoimentos recebidos.";
+    target.appendChild(empty);
+    return;
+  }
+
+  items.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "admin-testimonial-card";
+    const status = document.createElement("span");
+    status.className = `admin-clinic-status${item.is_published ? " is-published" : ""}`;
+    status.textContent = item.is_published ? "Publicado" : "Aguardando avaliação";
+    const author = document.createElement("h3");
+    author.textContent = item.name;
+    const content = document.createElement("p");
+    content.className = "admin-testimonial-content";
+    content.textContent = item.content;
+    const button = document.createElement("button");
+    button.className = item.is_published ? "btn btn-outline btn-small" : "btn btn-primary btn-small";
+    button.type = "button";
+    button.dataset.testimonialId = item.id;
+    button.dataset.publish = String(!item.is_published);
+    button.textContent = item.is_published ? "Retirar do site" : "Aprovar publicação";
+    const actions = document.createElement("div");
+    actions.className = "admin-testimonial-actions";
+    actions.appendChild(button);
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "btn btn-danger btn-small admin-delete-button";
+    deleteButton.type = "button";
+    deleteButton.dataset.testimonialId = item.id;
+    deleteButton.dataset.testimonialName = item.name;
+    deleteButton.textContent = "Excluir permanentemente";
+    actions.appendChild(deleteButton);
+    card.append(status, author, content, actions);
+    target.appendChild(card);
+  });
+}
+
+async function loadTestimonials() {
+  const feedback = $("#testimonialAdminFeedback");
+  setFeedback(feedback, "Carregando depoimentos...");
+  const result = await listAdminTestimonials();
+  if (result.error || !Array.isArray(result.data)) {
+    console.error("[Admin] Não foi possível carregar os depoimentos.", result.error);
+    setFeedback(feedback, "Não foi possível carregar os depoimentos. Confira sua conexão e tente novamente.", true);
+    return false;
+  }
+  showTestimonials(result.data);
+  setFeedback(feedback, "");
+  return true;
 }
 
 async function refreshAccess(session) {
@@ -78,6 +149,7 @@ async function refreshAccess(session) {
   if (accessPanel) accessPanel.hidden = !authenticated;
   if (clinicPanel) clinicPanel.hidden = true;
   if (clinicListPanel) clinicListPanel.hidden = true;
+  if (testimonialPanel) testimonialPanel.hidden = true;
   if (promotionInstructions) promotionInstructions.hidden = true;
   if (!authenticated) return;
 
@@ -96,7 +168,7 @@ async function refreshAccess(session) {
     return;
   }
   if (!result.data) {
-    setFeedback(message, "Sua conta ainda não tem autorização para administrar clínicas.");
+    setFeedback(message, "Sua conta ainda não tem autorização para administrar clínicas e depoimentos.");
     if (promotionInstructions) promotionInstructions.hidden = false;
     return;
   }
@@ -104,7 +176,8 @@ async function refreshAccess(session) {
   setFeedback(message, `Acesso administrativo autorizado para ${session.user.email}.`);
   if (clinicPanel) clinicPanel.hidden = false;
   if (clinicListPanel) clinicListPanel.hidden = false;
-  await loadClinics();
+  if (testimonialPanel) testimonialPanel.hidden = false;
+  await Promise.all([loadClinics(), loadTestimonials()]);
 }
 
 function initAdmin() {
@@ -211,6 +284,61 @@ function initAdmin() {
 
   const refreshButton = $("#refreshClinics");
   if (refreshButton) refreshButton.addEventListener("click", loadClinics);
+
+  const clinicList = $("#adminClinicList");
+  if (clinicList) clinicList.addEventListener("click", async event => {
+    const button = event.target.closest("button[data-clinic-id]");
+    if (!button || !window.confirm(`Excluir permanentemente a clínica "${button.dataset.clinicName}"? Esta ação não pode ser desfeita.`)) return;
+    button.disabled = true;
+    const result = await deleteClinic(button.dataset.clinicId);
+    if (result.error) {
+      console.error("[Admin] Não foi possível excluir a clínica.", result.error);
+      setFeedback($("#clinicFeedback"), "Não foi possível excluir a clínica. Confira sua autorização e tente novamente.", true);
+      button.disabled = false;
+      return;
+    }
+    if (await loadClinics()) {
+      setFeedback($("#clinicFeedback"), "Clínica excluída permanentemente.");
+    }
+  });
+
+  const refreshTestimonialsButton = $("#refreshTestimonials");
+  if (refreshTestimonialsButton) refreshTestimonialsButton.addEventListener("click", loadTestimonials);
+
+  const testimonialList = $("#adminTestimonialList");
+  if (testimonialList) testimonialList.addEventListener("click", async event => {
+    const deleteButton = event.target.closest("button[data-testimonial-id]:not([data-publish])");
+    if (deleteButton) {
+      if (!window.confirm(`Excluir permanentemente o depoimento de "${deleteButton.dataset.testimonialName}"? Esta ação não pode ser desfeita.`)) return;
+      deleteButton.disabled = true;
+      const deleteResult = await deleteTestimonial(deleteButton.dataset.testimonialId);
+      if (deleteResult.error) {
+        console.error("[Admin] Não foi possível excluir o depoimento.", deleteResult.error);
+        setFeedback($("#testimonialAdminFeedback"), "Não foi possível excluir o depoimento. Confira sua autorização e tente novamente.", true);
+        deleteButton.disabled = false;
+        return;
+      }
+      if (await loadTestimonials()) {
+        setFeedback($("#testimonialAdminFeedback"), "Depoimento excluído permanentemente.");
+      }
+      return;
+    }
+
+    const button = event.target.closest("button[data-testimonial-id][data-publish]");
+    if (!button) return;
+    button.disabled = true;
+    const shouldPublish = button.dataset.publish === "true";
+    const result = await setTestimonialPublished(button.dataset.testimonialId, shouldPublish);
+    if (result.error) {
+      console.error("[Admin] Não foi possível atualizar o depoimento.", result.error);
+      setFeedback($("#testimonialAdminFeedback"), "Não foi possível atualizar o depoimento. Confira sua autorização e tente novamente.", true);
+      button.disabled = false;
+      return;
+    }
+    if (await loadTestimonials()) {
+      setFeedback($("#testimonialAdminFeedback"), shouldPublish ? "Depoimento aprovado e publicado." : "Depoimento retirado do site.");
+    }
+  });
 
   getSession().then(refreshAccess);
   const authListener = onAuthStateChange((_event, session) => {

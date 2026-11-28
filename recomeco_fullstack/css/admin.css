@@ -31,5 +31,7 @@
 .admin-clinic-status{display:inline-block;border-radius:20px;padding:3px 9px;background:#fff2db;color:#805b1c;font-size:10px;font-weight:800}
 .admin-clinic-status.is-published{background:#e7f2e9;color:#285b45}
 .admin-empty{padding:20px;text-align:center;background:#f7faf6;border-radius:10px;color:#687b72;font-size:12px}
+.admin-delete-button{margin-top:11px}
+.admin-testimonial-actions{grid-column:1/-1;display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px}
 [hidden]{display:none!important}
-@media(max-width:620px){.admin-main{padding-block:38px 60px}.admin-panel{padding:18px}.admin-form{grid-template-columns:1fr}.clinic-description,.admin-hint,.clinic-submit{grid-column:auto}.admin-panel-heading{align-items:flex-start}.admin-access-panel .admin-panel-heading{align-items:center}}
+@media(max-width:620px){.admin-main{padding-block:38px 60px}.admin-panel{padding:18px}.admin-form{grid-template-columns:1fr}.clinic-description,.admin-hint,.clinic-submit{grid-column:auto}.admin-panel-heading{align-items:flex-start}.admin-access-panel .admin-panel-heading{align-items:center}.admin-testimonial-actions{justify-content:flex-start}}

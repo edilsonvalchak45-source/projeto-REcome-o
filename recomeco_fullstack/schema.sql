@@ -37,6 +37,15 @@ alter table public.support_resources
 alter table public.support_resources
   add column if not exists address text;
 
+create table if not exists public.testimonials (
+  id uuid primary key default gen_random_uuid(),
+  name text not null check (char_length(btrim(name)) between 1 and 60),
+  content text not null check (char_length(btrim(content)) between 20 and 800),
+  consent boolean not null default false check (consent = true),
+  is_published boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
 create table if not exists public.content_items (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null,
@@ -60,6 +69,8 @@ create table if not exists public.journal_entries (
 
 create index if not exists support_resources_published_idx
   on public.support_resources (is_published, category, city);
+create index if not exists testimonials_published_created_idx
+  on public.testimonials (is_published, created_at desc);
 create index if not exists journal_entries_user_created_idx
   on public.journal_entries (user_id, created_at desc);
 create index if not exists content_items_published_idx
@@ -68,6 +79,7 @@ create index if not exists content_items_published_idx
 alter table public.profiles enable row level security;
 alter table public.admin_users enable row level security;
 alter table public.support_resources enable row level security;
+alter table public.testimonials enable row level security;
 alter table public.content_items enable row level security;
 alter table public.journal_entries enable row level security;
 
@@ -97,6 +109,11 @@ revoke all on public.admin_users from public, anon, authenticated;
 grant select on public.admin_users to authenticated;
 grant select on public.support_resources to anon, authenticated;
 grant insert, update, delete on public.support_resources to authenticated;
+revoke all on public.testimonials from public, anon, authenticated;
+grant select on public.testimonials to anon, authenticated;
+grant insert on public.testimonials to anon, authenticated;
+grant update on public.testimonials to authenticated;
+grant delete on public.testimonials to authenticated;
 
 -- Somente administradores podem consultar registros não publicados e gerenciar clínicas.
 drop policy if exists "resources_admin_read" on public.support_resources;
@@ -126,6 +143,31 @@ create policy "resources_admin_delete_clinics" on public.support_resources
   for delete to authenticated using (
     category = 'Clínicas'
     and exists (select 1 from public.admin_users where user_id = auth.uid())
+  );
+
+-- Depoimentos: qualquer visitante pode enviar apenas relatos pendentes.
+drop policy if exists "testimonials_public_read" on public.testimonials;
+create policy "testimonials_public_read" on public.testimonials
+  for select to anon, authenticated using (is_published = true);
+drop policy if exists "testimonials_admin_read" on public.testimonials;
+create policy "testimonials_admin_read" on public.testimonials
+  for select to authenticated using (
+    exists (select 1 from public.admin_users where user_id = auth.uid())
+  );
+drop policy if exists "testimonials_public_insert_pending" on public.testimonials;
+create policy "testimonials_public_insert_pending" on public.testimonials
+  for insert to anon, authenticated with check (
+    is_published = false and consent = true
+  );
+drop policy if exists "testimonials_admin_update" on public.testimonials;
+create policy "testimonials_admin_update" on public.testimonials
+  for update to authenticated
+  using (exists (select 1 from public.admin_users where user_id = auth.uid()))
+  with check (exists (select 1 from public.admin_users where user_id = auth.uid()));
+drop policy if exists "testimonials_admin_delete" on public.testimonials;
+create policy "testimonials_admin_delete" on public.testimonials
+  for delete to authenticated using (
+    exists (select 1 from public.admin_users where user_id = auth.uid())
   );
 
 -- Conteúdos: leitura pública apenas para materiais publicados.
@@ -191,5 +233,5 @@ drop trigger if exists content_updated_at on public.content_items;
 create trigger content_updated_at before update on public.content_items
   for each row execute procedure public.set_updated_at();
 
--- Não há política de escrita pública para o diretório/conteúdos.
--- Gerencie esses registros pelo painel Supabase ou por backend administrativo confiável.
+-- Não há escrita pública no diretório/conteúdos; depoimentos aceitam apenas envios pendentes.
+-- Gerencie os demais registros pelo painel Supabase ou por backend administrativo confiável.
