@@ -1,5 +1,3 @@
-import { CONFIG } from "./config.js";
-
 const SAFETY_TERMS = /(overdose|intoxica|desmai|não respira|convuls|suic|me matar|tirar minha vida|me machucar)/i;
 const EMERGENCY_REPLY = "Isso pode exigir ajuda imediata. Se houver risco médico ou perigo imediato, ligue 192 (SAMU) ou procure um pronto atendimento agora. Para apoio emocional, o CVV atende pelo 188. Este chat não é monitorado por uma equipe de emergência.";
 
@@ -49,23 +47,27 @@ export function initChatbot() {
     if (submitButton) submitButton.disabled = true;
 
     try {
-      const apiBaseUrl = (CONFIG && CONFIG.RECOMMENDER_API_URL) ? CONFIG.RECOMMENDER_API_URL.replace(/\/$/, "") : "http://127.0.0.1:8000";
-      const response = await fetch(`${apiBaseUrl}/chat`, {
+      const response = await fetch("/.netlify/functions/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: message })
+        body: JSON.stringify({
+          message: message,
+          history: history.slice(0, -1)
+        })
       });
 
-      if (!response.ok) throw new Error(`Falha ao comunicar com o assistente (${response.status}).`);
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || `Falha ao comunicar com o assistente (${response.status}).`);
+      }
 
-      const reply = (data.reply || data.response || "").trim() || "Não consegui formular uma resposta agora. Tente novamente em instantes.";
+      const reply = (data.reply || data.response || data.message || "").trim() || "Não consegui formular uma resposta agora. Tente novamente em instantes.";
 
       addMessage(reply, "assistant");
       history.push({ role: "assistant", content: reply });
     } catch (error) {
       console.error(error);
-      const reply = `${error.message} Verifique se o servidor FastAPI (uvicorn) está rodando na porta 8000. Em uma emergência, ligue 192.`;
+      const reply = `${error.message} Em uma emergência, ligue 192.`;
       addMessage(reply, "assistant");
       history.push({ role: "assistant", content: reply });
     } finally {
