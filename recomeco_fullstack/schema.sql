@@ -1,7 +1,3 @@
--- RECOMEÇO — schema PostgreSQL para Supabase
--- Execute no SQL Editor do projeto Supabase.
--- Tabelas públicas possuem leitura restrita a registros publicados.
--- Registros de diário são privados e vinculados ao usuário autenticado.
 
 create extension if not exists pgcrypto;
 
